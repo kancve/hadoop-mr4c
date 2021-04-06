@@ -26,13 +26,10 @@ Build with:
 
 ```bash
 apt-get install -y liblog4cxx-dev libcppunit-dev libjansson-dev
-cd hadoop-mr4c
-maven package
+cd hadoop-mr4c && maven package
 cd hadoop-mr4c/src/main/cpp
-mkdir build
-cd build
-cmake ..
-make
+mkdir build && cd build
+cmake .. && make
 ```
 
 
