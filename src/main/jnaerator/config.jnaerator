@@ -1,0 +1,7 @@
+-library mr4c
+-o src/main/java
+-package com.google.mr4c.nativec.jna.lib
+-f
+-mode Directory
+-runtime JNAerator
+-Isrc/main/cpp/api/external/capi src/main/cpp/api/external/capi/external_capi.h
