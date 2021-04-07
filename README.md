@@ -25,13 +25,22 @@ Hadoop-mr4c enables large-scale deployment of advanced data processing applicati
 Build with:
 
 ```bash
-apt-get install -y liblog4cxx-dev libcppunit-dev libjansson-dev
-cd hadoop-mr4c && maven package
-cd hadoop-mr4c/src/main/cpp
-mkdir build && cd build
-cmake .. && make
-```
+#!/bin/bash
+set -e
 
+mkdir -p build dist
+
+# Package mr4c.jar
+mvn clean package
+
+# Building libmr4c.so
+cd build && rm -rf * && \
+    cmake ../src/main/cpp -DCMAKE_BUILD_TYPE=Release && make
+
+# Integration target.
+cd .. && \
+    cp -r target/classes/lib target/*.jar build/*.so dist
+```
 
 If you get stuck, have questions, or would like to provide *any* feedback, please don’t hesitate to contact us at mr4c@googlegroups.com. 
 Let’s do big things together.
