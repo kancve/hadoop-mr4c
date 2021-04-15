@@ -31,18 +31,16 @@ RUN cd /opt && \
     mv hadoop-${HADOOP_VERSION} hadoop && \
     rm -rf hadoop/share/doc
 
-# install hadoop-mr4c
-RUN cd /opt && \
-    wget https://github.com/kancve/hadoop-mr4c/archive/refs/tags/${MR4C_VERSION}.tar.gz && \
-    tar -zxvf ${MR4C_VERSION}.tar.gz && \
-    mv hadoop-mr4c-${MR4C_VERSION} hadoop-mr4c
-
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 HADOOP_HOME=/opt/hadoop MAVEN_HOME=/opt/apache-maven MR4C_HOME=/opt/hadoop-mr4c LANG=C.UTF-8
 ENV HADOOP_COMMON_HOME=$HADOOP_HOME HADOOP_HDFS_HOME=$HADOOP_HOME HADOOP_MAPRED_HOME=$HADOOP_HOME HADOOP_YARN_HOME=$HADOOP_HOME
 ENV PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$MAVEN_HOME/bin
 
-# build hadoop-mr4c
-RUN cd /opt/hadoop-mr4c && \
+# install hadoop-mr4c
+RUN cd /opt && \
+    wget https://github.com/kancve/hadoop-mr4c/archive/refs/tags/${MR4C_VERSION}.tar.gz && \
+    tar -zxvf ${MR4C_VERSION}.tar.gz && \
+    mv hadoop-mr4c-${MR4C_VERSION} hadoop-mr4c && \
+    cd hadoop-mr4c && \
     chmod -R 755 build.sh && ./build.sh
 
 FROM ubuntu:20.04
@@ -57,7 +55,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libjansson4 && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /opt/hadoop-mr4c/dist /hadoop-mr4c
+COPY --from=build /opt/hadoop-mr4c/dist /opt/hadoop-mr4c
 COPY --from=build /opt/hadoop /opt/hadoop
 
 # set environment variable for java & hadoop
@@ -67,4 +65,5 @@ ENV PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$MR4C_HOME/bin
 
 # Initialize hadoop cluster
 RUN mkdir -p /etc/hadoop && \
-    ln -s -f $HADOOP_HOME/etc/hadoop /etc/hadoop/conf
+    ln -s -f $HADOOP_HOME/etc/hadoop /etc/hadoop/conf && \
+    ln -s -f $MR4C_HOME/conf /etc/mr4c

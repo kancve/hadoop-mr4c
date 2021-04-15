@@ -10,7 +10,7 @@ Hadoop-mr4c enables large-scale deployment of advanced data processing applicati
 ### Dependencies
 
 * tested with Ubuntu 20.04
-* tested with hadoop-2.9.2
+* tested with hadoop-3.2.2
 * java (1.8 min)
 * maven (3.6.3 min)
 * cmake (3.2.0 min)
@@ -39,8 +39,5 @@ cd build && rm -rf * && \
 
 # Integration target.
 cd .. && \
-    cp -r target/classes/lib target/*.jar build/*.so dist
+    cp -r target/classes/lib target/*.jar build/*.so src/main/resources/* dist
 ```
-
-If you get stuck, have questions, or would like to provide *any* feedback, please don’t hesitate to contact us at mr4c@googlegroups.com. 
-Let’s do big things together.
