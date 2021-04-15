@@ -1,0 +1,8 @@
+{
+    "clusters" : {
+        "local" : {
+            "jobTracker" : "hadoop-master:8032"
+            ,"nameNode" : "hdfs://hadoop-master:9820"
+        }
+    }
+}

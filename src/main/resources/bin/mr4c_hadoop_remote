@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# args:
+# $1 = URI to execution config file
+# $2 = name of cluster
+# $3 = number of map tasks
+
+if [ $# -lt 1 ]  
+then
+  echo "Usage: mr4c_hadoop_remote execution_config_uri [cluster_name] [num_tasks] [name=val ...]"
+  exit -1
+fi
+
+MR4C_JAR_WITH_LIBS=$MR4C_HOME/mr4c-1.0.jar
+MR4C_CONF=$MR4C_HOME/conf
+MR4C_CLASSPATH=$MR4C_CONF:$MR4C_JAR_WITH_LIBS:$MR4C_HOME/lib/'*':$MR4C_ALGORITHM_CLASSPATH
+MR4C_LIBPATH=$LD_LIBRARY_PATH:.:/usr/local/lib:$MR4C_HOME
+
+java -cp "$MR4C_CLASSPATH" -Djna.library.path=$MR4C_LIBPATH -Dmr4c.hadoop.algorithm.classpath=$MR4C_ALGORITHM_CLASSPATH -Dmr4c.log4j=$MR4C_LOG4J_CONFIG -Dmr4c.site=$MR4C_SITE $MR4C_JAVA_OPTS com.google.mr4c.hadoop.RemoteAlgoRunner $MR4C_JAR_WITH_LIBS $*
+

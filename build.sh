@@ -12,4 +12,4 @@ cd build && rm -rf * && \
 
 # Integration target.
 cd .. && \
-    cp -r target/classes/lib target/*.jar build/*.so dist
+    cp -r target/classes/lib target/*.jar build/*.so src/main/resources/* dist
