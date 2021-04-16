@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   hadoop-master:
-    image: hadoop-mr4c:1.0
+    image: kancve/hadoop-mr4c
     hostname: hadoop-master
     volumes:
       - ./volumes/hadoop/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
@@ -15,7 +15,7 @@ services:
       endpoint_mode: dnsrr
 
   hadoop-worker1:
-    image: hadoop-mr4c:1.0
+    image: kancve/hadoop-mr4c
     hostname: hadoop-worker1
     volumes:
       - ./volumes/hadoop/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
@@ -28,7 +28,7 @@ services:
       endpoint_mode: dnsrr
 
   hadoop-worker2:
-    image: hadoop-mr4c:1.0
+    image: kancve/hadoop-mr4c
     hostname: hadoop-worker2
     volumes:
       - ./volumes/hadoop/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
@@ -41,7 +41,7 @@ services:
       endpoint_mode: dnsrr
 
   hadoop-worker3:
-    image: hadoop-mr4c:1.0
+    image: kancve/hadoop-mr4c
     hostname: hadoop-worker3
     volumes:
       - ./volumes/hadoop/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
