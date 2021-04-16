@@ -33,6 +33,12 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
 
+    - name: Installation of 3rdparty library
+      # log4cxx (0.10.0)
+      # jansson (2.2.1 min)
+      # cppunit (1.12.1 min)
+      run: apt-get update && apt-get install -y liblog4cxx-dev libcppunit-dev libjansson-dev
+
     - name: Create Cmake Build Environment
       # Some projects don't allow in-source building, so create a separate build directory
       # We'll use this as our working directory for all subsequent commands
