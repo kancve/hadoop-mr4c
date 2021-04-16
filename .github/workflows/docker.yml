@@ -32,20 +32,21 @@ jobs:
       with:
         java-version: '8'
         distribution: 'adopt'
-        
+
+    - name: Create Cmake Build Environment
+      # Some projects don't allow in-source building, so create a separate build directory
+      # We'll use this as our working directory for all subsequent commands
+      run: cmake -E make_directory ${{github.workspace}}/build
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Configure CMake & build
+    - name: Build with CMake
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
       shell: bash
       working-directory: ${{github.workspace}}/build
       run: |
-
-        # Some projects don't allow in-source building, so create a separate build directory
-        # We'll use this as our working directory for all subsequent commands
-        cmake -E make_directory ${{github.workspace}}/build
 
         # Note the current convention is to use the -S and -B options here to specify source 
         # and build directories, but this is only available with CMake 3.13 and higher.
@@ -55,8 +56,8 @@ jobs:
         # Execute the build.  You can specify a specific target with "--target <NAME>"
         cmake --build . --config $BUILD_TYPE
 
-  # Run tests.
-  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
+  # Run docker build.
+  # See also https://docs.docker.com/docker-hub/builds/
   docker-build:
     # Ensure mr4c-build job passes before building the docker image.
     needs: mr4c-build
