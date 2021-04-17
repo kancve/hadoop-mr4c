@@ -2,6 +2,9 @@
 
 set -e
 
+# Link all files from volumes to hadoop config directory.
+ln -s -f /volumes/hadoop/* $HADOOP_HOME/etc/hadoop/
+
 if [ "$1" = "master" ]; then
   if [ ! -d "/opt/tmp/dfs/name" ]; then
     hdfs namenode -format

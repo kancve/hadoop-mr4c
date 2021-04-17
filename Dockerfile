@@ -62,4 +62,5 @@ ENV PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$MR4C_HOME/bin
 # Initialize hadoop cluster
 RUN mkdir -p /etc/hadoop && \
     ln -s -f $HADOOP_HOME/etc/hadoop /etc/hadoop/conf && \
-    ln -s -f $MR4C_HOME/conf /etc/mr4c
+    ln -s -f $MR4C_HOME/conf /etc/mr4c && \
+    chmod -R 755 $MR4C_HOME/bin

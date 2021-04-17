@@ -5,12 +5,9 @@ services:
     image: kancve/hadoop-mr4c
     hostname: hadoop-master
     volumes:
-      - ./volumes/hadoop/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
-      - ./volumes/hadoop/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
-      - ./volumes/hadoop/mapred-site.xml:/opt/hadoop/etc/hadoop/mapred-site.xml
-      - ./volumes/hadoop/yarn-site.xml:/opt/hadoop/etc/hadoop/yarn-site.xml
-      - ./volumes/entrypoint.sh:/opt/entrypoint.sh
-    entrypoint: /opt/entrypoint.sh master
+      - ./volumes/hadoop:/volumes/hadoop
+      - ./volumes/entrypoint.sh:/volumes/entrypoint.sh
+    entrypoint: /volumes/entrypoint.sh master
     deploy:
       endpoint_mode: dnsrr
 
@@ -18,12 +15,9 @@ services:
     image: kancve/hadoop-mr4c
     hostname: hadoop-worker1
     volumes:
-      - ./volumes/hadoop/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
-      - ./volumes/hadoop/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
-      - ./volumes/hadoop/mapred-site.xml:/opt/hadoop/etc/hadoop/mapred-site.xml
-      - ./volumes/hadoop/yarn-site.xml:/opt/hadoop/etc/hadoop/yarn-site.xml
-      - ./volumes/entrypoint.sh:/opt/entrypoint.sh
-    entrypoint: /opt/entrypoint.sh worker
+      - ./volumes/hadoop:/volumes/hadoop
+      - ./volumes/entrypoint.sh:/volumes/entrypoint.sh
+    entrypoint: /volumes/entrypoint.sh worker
     deploy:
       endpoint_mode: dnsrr
 
@@ -31,12 +25,9 @@ services:
     image: kancve/hadoop-mr4c
     hostname: hadoop-worker2
     volumes:
-      - ./volumes/hadoop/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
-      - ./volumes/hadoop/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
-      - ./volumes/hadoop/mapred-site.xml:/opt/hadoop/etc/hadoop/mapred-site.xml
-      - ./volumes/hadoop/yarn-site.xml:/opt/hadoop/etc/hadoop/yarn-site.xml
-      - ./volumes/entrypoint.sh:/opt/entrypoint.sh
-    entrypoint: /opt/entrypoint.sh worker
+      - ./volumes/hadoop:/volumes/hadoop
+      - ./volumes/entrypoint.sh:/volumes/entrypoint.sh
+    entrypoint: /volumes/entrypoint.sh worker
     deploy:
       endpoint_mode: dnsrr
 
@@ -44,12 +35,9 @@ services:
     image: kancve/hadoop-mr4c
     hostname: hadoop-worker3
     volumes:
-      - ./volumes/hadoop/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
-      - ./volumes/hadoop/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
-      - ./volumes/hadoop/mapred-site.xml:/opt/hadoop/etc/hadoop/mapred-site.xml
-      - ./volumes/hadoop/yarn-site.xml:/opt/hadoop/etc/hadoop/yarn-site.xml
-      - ./volumes/entrypoint.sh:/opt/entrypoint.sh
-    entrypoint: /opt/entrypoint.sh worker
+      - ./volumes/hadoop:/volumes/hadoop
+      - ./volumes/entrypoint.sh:/volumes/entrypoint.sh
+    entrypoint: /volumes/entrypoint.sh worker
     deploy:
       endpoint_mode: dnsrr
 
