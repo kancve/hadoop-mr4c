@@ -17,7 +17,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   # Docker image's name.
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: hadoop-mr4c
 
 jobs:
   # Build the hadoop-mr4c
@@ -38,6 +38,15 @@ jobs:
       # jansson (2.2.1 min)
       # cppunit (1.12.1 min)
       run: sudo apt-get install -y liblog4cxx-dev libcppunit-dev libjansson-dev
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: [ 'cpp', 'java' ]
+        # If you wish to specify custom queries, you can do so here or in a config file.
+        # By default, queries listed here will override any specified in a config file.
+        # Prefix the list here with "+" to use these queries and those in the config file.
+        # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
     - name: Create Cmake Build Environment
       # Some projects don't allow in-source building, so create a separate build directory
@@ -61,6 +70,9 @@ jobs:
 
         # Execute the build.  You can specify a specific target with "--target <NAME>"
         cmake --build . --config $BUILD_TYPE
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
 
   # Run docker build.
   # See also https://docs.docker.com/docker-hub/builds/
@@ -96,7 +108,7 @@ jobs:
 
       - name: Push image
         run: |
-          IMAGE_ID=docker.pkg.github.com/$IMAGE_NAME
+          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
 
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
