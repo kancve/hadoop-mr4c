@@ -2,9 +2,9 @@ name: Docker
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
+    # Publish `16.04` as Docker `16.04` image.
     branches:
-      - master
+      - "16.04"
 
     # Publish `v1.2.3` tags as releases.
     tags:
