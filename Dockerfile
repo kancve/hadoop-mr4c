@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 as build
+FROM ubuntu:16.04 as build
 
 # install compilation environment
 RUN apt-get update && apt-get install -y \
@@ -39,7 +39,7 @@ COPY . /opt/hadoop-mr4c
 RUN cd /opt/hadoop-mr4c && \
     chmod -R 755 build.sh && ./build.sh
 
-FROM ubuntu:20.04
+FROM ubuntu:16.04
 
 MAINTAINER kancve <https://kancve.github.io/>
 
