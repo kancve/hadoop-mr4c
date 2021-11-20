@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2.0 FATAL_ERROR)
 project(mr4c)
 
-set(CMAKE_CXX_FLAGS "$CMAKE_CXX_FLAGS -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 include_directories(api)
 
