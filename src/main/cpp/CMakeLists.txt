@@ -9,3 +9,9 @@ file(GLOB_RECURSE MR4C_SOURCES impl/*)
 
 add_library(${PROJECT_NAME} SHARED ${MR4C_SOURCES})
 target_link_libraries(${PROJECT_NAME} liblog4cxx.so libjansson.so)
+
+# install configure
+set (CMAKE_INSTALL_PREFIX /usr/local/hadoop-mr4c)
+
+install(DIRECTORY api/ DESTINATION include)
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
