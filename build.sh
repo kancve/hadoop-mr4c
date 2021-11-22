@@ -4,6 +4,9 @@ set -e
 HADOOP_VERSION=${1:-3.2.2}
 INSTALL_PREFIX=${2:-/usr/local/hadoop-mr4c}
 
+# Initialize installation directory
+mkdir -p ${INSTALL_PREFIX}
+
 # Package mr4c.jar
 mvn clean package -Dhadoop-version=${HADOOP_VERSION}
 cp -r target/classes/lib target/*.jar src/main/resources/* ${INSTALL_PREFIX}
