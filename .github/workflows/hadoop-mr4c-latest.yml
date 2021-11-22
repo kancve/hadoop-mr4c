@@ -33,7 +33,7 @@ jobs:
         run: docker build . --file Dockerfile
 
       - name: Build the Docker image (dev)
-        run: docker build . --file Dockerfile --taraget dev
+        run: docker build . --file Dockerfile --target dev
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
@@ -51,7 +51,7 @@ jobs:
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
       - name: Build image (dev)
-        run: docker build . --file Dockerfile --tag ${IMAGE_NAME}-dev --taraget dev
+        run: docker build . --file Dockerfile --tag ${IMAGE_NAME}-dev --target dev
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
