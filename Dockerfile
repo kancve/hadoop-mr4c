@@ -1,16 +1,12 @@
 ARG VERSION=latest
 
-FROM ubuntu:${VERSION} as build
+FROM ubuntu:${VERSION} as builder
 
-# install compilation environment
+# install build environment
 RUN apt-get update && apt-get install -y \
     vim \
-    openssh-server \
-    gcc \
-    g++ \
     cmake \
-    make \
-    net-tools \
+    g++ \
     openjdk-8-jdk-headless \
     liblog4cxx-dev \
     libcppunit-dev \
@@ -32,18 +28,47 @@ RUN cd /opt && \
     mv hadoop-${HADOOP_VERSION} hadoop && \
     rm -rf hadoop/share/doc
 
-ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 HADOOP_HOME=/opt/hadoop MAVEN_HOME=/opt/apache-maven MR4C_HOME=/opt/hadoop-mr4c LANG=C.UTF-8
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 HADOOP_HOME=/opt/hadoop MAVEN_HOME=/opt/apache-maven MR4C_HOME=/usr/local/hadoop-mr4c LANG=C.UTF-8
 ENV HADOOP_COMMON_HOME=$HADOOP_HOME HADOOP_HDFS_HOME=$HADOOP_HOME HADOOP_MAPRED_HOME=$HADOOP_HOME HADOOP_YARN_HOME=$HADOOP_HOME
-ENV PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$MAVEN_HOME/bin:$MR4C_HOME/dist/bin
+ENV PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$MAVEN_HOME/bin:$MR4C_HOME/bin
 
 # install hadoop-mr4c
 COPY . /opt/hadoop-mr4c
 RUN cd /opt/hadoop-mr4c && \
-    chmod -R 755 build.sh && ./build.sh
+    chmod -R 755 build.sh && ./build.sh ${HADOOP_VERSION} ${MR4C_HOME}
+
+FROM ubuntu:${VERSION} as dev
+
+# install hdmc dev environment
+RUN apt-get update && apt-get install -y \
+    vim \
+    cmake \
+    g++ \
+    gdb \
+    git \
+    subversion \
+    openssh-server \
+    liblog4cxx-dev \
+    libcppunit-dev \
+    libjansson-dev
+
+# set environment variable for mr4c & boost
+ENV MR4C_HOME=/usr/local/hadoop-mr4c BOOST_ROOT=/opt/boost_1_77_0 LANG=C.UTF-8
+
+# copy mr4c
+COPY --from=builder ${MR4C_HOME} ${MR4C_HOME}
+
+# install boost source
+RUN cd /opt && \
+    wget https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz && \
+    tar -zxvf boost_1_77_0.tar.gz -C /usr/local && \
+    rm boost_1_77_0.tar.gz
+
+ENTRYPOINT [ "/etc/init.d/ssh start" ]
 
 FROM ubuntu:${VERSION}
 
-MAINTAINER kancve <https://kancve.github.io/>
+LABEL author="kancve<https://kancve.github.io/>"
 
 # install runtime environment
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -53,13 +78,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libjansson4 && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /opt/hadoop-mr4c/dist /opt/hadoop-mr4c
-COPY --from=build /opt/hadoop /opt/hadoop
-
 # set environment variable for java & hadoop
-ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 HADOOP_HOME=/opt/hadoop MR4C_HOME=/opt/hadoop-mr4c LANG=C.UTF-8
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 HADOOP_HOME=/opt/hadoop MR4C_HOME=/usr/local/hadoop-mr4c LANG=C.UTF-8
 ENV HADOOP_COMMON_HOME=$HADOOP_HOME HADOOP_HDFS_HOME=$HADOOP_HOME HADOOP_MAPRED_HOME=$HADOOP_HOME HADOOP_YARN_HOME=$HADOOP_HOME
 ENV PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$MR4C_HOME/bin
+
+COPY --from=builder ${MR4C_HOME} ${MR4C_HOME}
+COPY --from=builder ${HADOOP_HOME} ${HADOOP_HOME}
 
 # Initialize hadoop cluster
 RUN mkdir -p /etc/hadoop && \

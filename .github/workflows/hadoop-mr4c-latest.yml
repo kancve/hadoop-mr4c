@@ -29,8 +29,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build the Docker image
+      - name: Build the Docker image (runtime)
         run: docker build . --file Dockerfile
+
+      - name: Build the Docker image (dev)
+        run: docker build . --file Dockerfile --taraget dev
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
@@ -44,9 +47,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build image
+      - name: Build image (runtime)
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
+      - name: Build image (dev)
+        run: docker build . --file Dockerfile --tag ${IMAGE_NAME}-dev --taraget dev
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
@@ -71,3 +76,6 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+
+          docker tag ${IMAGE_NAME}-dev $IMAGE_ID:${VERSION}-dev
+          docker push $IMAGE_ID:${VERSION}-dev
