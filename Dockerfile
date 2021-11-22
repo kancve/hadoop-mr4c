@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     vim \
     cmake \
     g++ \
+    wget \
     openjdk-8-jdk-headless \
     liblog4cxx-dev \
     libcppunit-dev \
@@ -47,6 +48,7 @@ RUN apt-get update && apt-get install -y \
     gdb \
     git \
     subversion \
+    wget \
     openssh-server \
     liblog4cxx-dev \
     libcppunit-dev \
