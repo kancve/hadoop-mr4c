@@ -3,6 +3,7 @@ ARG VERSION=latest
 FROM ubuntu:${VERSION} as builder
 
 # install build environment
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     vim \
     cmake \
@@ -41,6 +42,7 @@ RUN cd /opt/hadoop-mr4c && \
 FROM ubuntu:${VERSION} as dev
 
 # install hdmc dev environment
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     vim \
     cmake \
@@ -73,6 +75,7 @@ FROM ubuntu:${VERSION}
 LABEL author="kancve<https://kancve.github.io/>"
 
 # install runtime environment
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     vim \
     openjdk-8-jdk-headless \
